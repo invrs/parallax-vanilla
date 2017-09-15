@@ -14,6 +14,7 @@
   	 * @type {Boolean}
   	 */
   	var dev = true;
+    var rafID = null;
 
 
   	/**
@@ -327,45 +328,57 @@
 	  /**
 	   * Window on resize event, updates pv.windowProps
 	   */
-	  window.onresize = function() {
+	  pv.onresize = function() {
 	  	pv.updateWindowProps_OnResize();
 	  	pv.init();
 	  }
 
 
-		/**
-		 * Request animation frame
-		 * Binds function to window
-		 */
-		window.raf = (function() {
-		  return window.requestAnimationFrame  ||
-		    window.webkitRequestAnimationFrame ||
-		    window.mozRequestAnimationFrame    ||
-		    function (callback) {
-					window.setTimeout(callback, 1000 / 60); // 60 FPS
-		    };
-		})();
+      pv.run = function() {
+          /**
+           * Request animation frame
+           * Binds function to window
+           */
+          window.raf = (function() {
+              return window.requestAnimationFrame  ||
+                  window.webkitRequestAnimationFrame ||
+                  window.mozRequestAnimationFrame    ||
+                  function (callback) {
+                      window.setTimeout(callback, 1000 / 60); // 60 FPS
+                  };
+          })();
 
 
-		/**
-		 * Main loop for updating variables and performing translates
-		 */
-		function updateLoop() {
-			pv.updateWindowProps_OnRaf();
-			pv.translate();
-			raf(updateLoop);
-		}
+          /**
+           * Main loop for updating variables and performing translates
+           */
+          function updateLoop() {
+              console.log("raf update loop running")
+              pv.updateWindowProps_OnRaf();
+              pv.translate();
+              raf(updateLoop);
+          }
 
 
-		/**
-		 * Initialize main loop
-		 */
-		raf(updateLoop);
+          /**
+           * Initialize main loop
+           */
+          rafID = raf(updateLoop);
 
 
-		/**
-		 * Returns the library
-		 */
+          /**
+           * Returns the library
+           */
+      }
+
+      pv.destroy = function() {
+          var cancelAnimationFrame = window.cancelAnimationFrame ||
+              window.mozCancelAnimationFrame ||
+              window.clearTimeout;
+
+          cancelAnimationFrame(rafID);
+      }
+
     return pv;
 
   } // end of define_pv()
@@ -376,9 +389,6 @@
    */
   if (typeof(pv) === 'undefined') {
     window.pv = define_parallax_vanilla();
-  	console.log("%c parallax-vanilla defined.", "color: green");
-  } else {
-    console.log("%c parallax-vanilla already defined.", "color: red");
   }
 
 })(window);
