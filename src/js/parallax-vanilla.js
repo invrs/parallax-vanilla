@@ -221,51 +221,45 @@
 							block.el.style.backgroundImage = "url('" + pvImage + "')";
 						}
 
-						var image = window.getComputedStyle(block.el).getPropertyValue("background-image");
+						// calculates the negative top property
+						// negative scroll distance
+						// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+						var top = 0;
+						var scrollDist = 0;
+						var paddingBottom = 0;
 
-						// if the pv-block has a background image
-						if (image != "none") {
+						// if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+						if (container.offset < pv.windowProps.windowHeight) {
+							scrollDist = (container.height + container.offset) / Math.abs(block.speed);
 
-							// calculates the negative top property
-							// negative scroll distance
-							// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-							var top = 0;
-							var scrollDist = 0;
-							var paddingBottom = 0;
-
-							// if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-							if (container.offset < pv.windowProps.windowHeight) {
-								scrollDist = (container.height + container.offset) / Math.abs(block.speed);
-
-								if (block.speed > 0) {
-									top = - Math.abs(container.offset);
-									paddingBottom = container.height + container.offset;
-								} else {
-									paddingBottom = scrollDist + (container.height);
-								}
-
-
-								// the pv-block is below the initial windowheight
+							if (block.speed > 0) {
+								top = - Math.abs(container.offset);
+								paddingBottom = container.height + container.offset;
 							} else {
-								scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
+								paddingBottom = scrollDist + (container.height);
+							}
+
+
+							// the pv-block is below the initial windowheight
+						} else {
+							scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
+							paddingBottom = scrollDist + container.height;
+
+							if (block.speed > 0) {
+								top = - scrollDist;
+								paddingBottom = container.height + (pv.windowProps.windowHeight / Math.abs(block.speed));
+							} else {
 								paddingBottom = scrollDist + container.height;
-
-								if (block.speed > 0) {
-									top = - scrollDist;
-									paddingBottom = container.height + (pv.windowProps.windowHeight / Math.abs(block.speed));
-								} else {
-									paddingBottom = scrollDist + container.height;
-								}
 							}
-
-							if (Math.abs(top) >= Math.abs(paddingBottom)) {
-								paddingBottom = Math.abs(top) + 1;
-							}
-
-							block.el.style.setProperty("padding-bottom", paddingBottom + "px", null);
-							// block.el.style.setProperty("top", top + "px", null);
-							block.el.style.setProperty("margin-top", top + "px", null);
 						}
+
+						if (Math.abs(top) >= Math.abs(paddingBottom)) {
+							paddingBottom = Math.abs(top) + 1;
+						}
+
+						block.el.style.setProperty("padding-bottom", paddingBottom + "px", null);
+						// block.el.style.setProperty("top", top + "px", null);
+						block.el.style.setProperty("margin-top", top + "px", null);
 
 						obj.blocks.push(block);
 
