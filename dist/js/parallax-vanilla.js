@@ -15,6 +15,7 @@
   	 */
   	var dev = true;
     var rafID = null;
+    var destroyed = false;
 
 
   	/**
@@ -335,6 +336,8 @@
 
 
       pv.run = function() {
+          destroyed = false
+
           /**
            * Request animation frame
            * Binds function to window
@@ -354,9 +357,10 @@
            */
           function updateLoop() {
               console.log("raf update loop running")
+              if(destroyed) { return; }
               pv.updateWindowProps_OnRaf();
               pv.translate();
-              raf(updateLoop);
+              rafID = raf(updateLoop);
           }
 
 
@@ -372,12 +376,14 @@
       }
 
       pv.destroy = function() {
+          console.log("pv destroying");
           var cancelAnimationFrame = window.cancelAnimationFrame ||
               window.mozCancelAnimationFrame ||
               window.clearTimeout;
 
           cancelAnimationFrame(rafID);
           pv.paraArr = []
+          destroyed = true
       }
 
     return pv;
