@@ -326,7 +326,7 @@
 		 * Request animation frame
 		 * Binds function to window
 		 */
-		pv.raf = (function() {
+		window.raf = (function() {
 		  return window.requestAnimationFrame  ||
 		    window.webkitRequestAnimationFrame ||
 		    window.mozRequestAnimationFrame    ||
