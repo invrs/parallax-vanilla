@@ -336,7 +336,7 @@
 
 
       pv.run = function() {
-          destroyed = false
+          destroyed = false;
 
           /**
            * Request animation frame
@@ -356,7 +356,6 @@
            * Main loop for updating variables and performing translates
            */
           function updateLoop() {
-              console.log("raf update loop running")
               if(destroyed) { return; }
               pv.updateWindowProps_OnRaf();
               pv.translate();
@@ -376,14 +375,13 @@
       }
 
       pv.destroy = function() {
-          console.log("pv destroying");
           var cancelAnimationFrame = window.cancelAnimationFrame ||
               window.mozCancelAnimationFrame ||
               window.clearTimeout;
 
           cancelAnimationFrame(rafID);
-          pv.paraArr = []
-          destroyed = true
+          pv.paraArr = [];
+          destroyed = true;
       }
 
     return pv;
