@@ -377,6 +377,7 @@
               window.clearTimeout;
 
           cancelAnimationFrame(rafID);
+          pv.paraArr = []
       }
 
     return pv;
