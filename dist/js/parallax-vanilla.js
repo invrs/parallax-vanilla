@@ -322,22 +322,11 @@
 			} // end of for container
 	  } // translate
 
-
-	  // window resize event
-	  /**
-	   * Window on resize event, updates pv.windowProps
-	   */
-	  window.onresize = function() {
-	  	pv.updateWindowProps_OnResize();
-	  	pv.init();
-	  }
-
-
 		/**
 		 * Request animation frame
 		 * Binds function to window
 		 */
-		window.raf = (function() {
+		pv.raf = (function() {
 		  return window.requestAnimationFrame  ||
 		    window.webkitRequestAnimationFrame ||
 		    window.mozRequestAnimationFrame    ||
