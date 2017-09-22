@@ -108,39 +108,10 @@
 		 * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
 		 */
 		pv.offsetTop = function(el) {
-			return pv.rect(el).top;
+            var rectTop = el.getBoundingClientRect().top,
+            scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            return (rectTop + scrollTop);
 		}
-
-		  pv.rect = function(el) {
-			  var offsetHeight, offsetLeft, offsetTop, offsetWidth;
-			  if (!el) {
-				  return;
-			  }
-			  offsetWidth = el.offsetWidth;
-			  offsetHeight = el.offsetHeight;
-			  offsetTop = pv.offset(el, "top");
-			  offsetLeft = pv.offset(el, "left");
-			  while (el = el.offsetParent) {
-				  offsetTop += pv.offset(el, "top");
-				  offsetLeft += pv.offset(el, "left");
-			  }
-			  return {
-				  top: offsetTop,
-				  left: offsetLeft,
-				  height: offsetHeight,
-				  width: offsetWidth,
-				  bottom: offsetTop + offsetHeight
-			  };
-		  }
-		  pv.offset = function(el, position) {
-			  var getter, offset;
-			  getter = "offset" + (position[0].toUpperCase() + position.slice(1));
-			  offset = el[getter];
-			  if (isNaN(offset)) {
-				  return 0;
-			  }
-			  return offset;
-		  }
 
 
 		/**
