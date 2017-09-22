@@ -242,16 +242,6 @@
 							}
 						}
 
-						var pvImage = block.el.getAttribute("pv-image");
-
-						if (pvImage == null) {
-							if (settings.block.image !== undefined) {
-								block.el.style.backgroundImage = "url('" + settings.block.image + "')";
-							}
-						} else {
-							block.el.style.backgroundImage = "url('" + pvImage + "')";
-						}
-
 						// calculates the negative top property
 						// negative scroll distance
 						// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
